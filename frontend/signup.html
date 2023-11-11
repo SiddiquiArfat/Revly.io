@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sign up</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+</head>
+<body>
+
+    <div class="main" style="height: 10%;">
+        <div class="signup-container">
+            <h1>Welome to DoubtShare</h1>
+            <form class="signup-form" method="post" action="/login">
+                <h2>SignUp form</h2>
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="username" placeholder="Enter Your Email" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter Your Password" required>
+                </div>
+                <div class="input-group">
+                    <label for="grade">Grade</label>
+                    <input type="number" id="grade" name="grade" placeholder="Enter Your grade"  min="1" max="10" required>
+                </div>
+                <div class="input-group">
+                    <label for="language" style="text-align: left;">Languages</label>
+                    <select name="language" id="language">
+                        <option value="English">English</option>
+                        <option value="Hindi">Hindi</option>
+                        <option value="Urdu">Urdu</option>
+                        <option value="Marathi">Marathi</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="role" style="text-align: left;">Role</label>
+                    <select name="role" id="role">
+                        <option value="STUDENT">Student</option>
+                        <option value="TUTOR">Tutor</option>
+                    </select>
+                </div>
+                <button id="register" type="submit">Log in</button>
+                <p>Already have an account? <a href="signin.html">Log In</a></p>
+            </form>
+        </div>
+        <div class="checkbox-container">
+            <h2>Select your Subjects</h2>
+            <div class="checkbox-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" class="checkbox-input" value="PHYSICS">
+                    
+                    Physics
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" class="checkbox-input" value="CHEMISTRY">
+                    Chemistry
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" class="checkbox-input" value="MATHS">
+                    
+                    Maths
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" class="checkbox-input" value="BIOLOGY">
+                    Biology
+                </label>
+            </div>
+        </div>
+
+        
+</body>
+
+<script>
+    const checkboxes = document.querySelectorAll('.checkbox-input');
+
+    const subjects = [];
+
+checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener('change', () => {
+        const selected = Array.from(checkboxes)
+            .filter((cb) => cb.checked)
+            .map((cb) => cb.value);
+        subjects.length = 0; 
+        subjects.push(...selected);
+
+        console.log(subjects);
+    });
+});
+
+
+    let form = document.querySelector('form');
+    form.addEventListener('submit',(e)=>{
+    e.preventDefault();
+    let email = form.email.value;
+    let password = form.password.value;
+    if(subjects.length == 0){
+        swal("Subjects", "Please Select subjects", "error")
+        throw new Error('subjects');
+    }
+    let url = 'http://localhost:8080/addStudent';
+
+    if(form.role.value == "TUTOR"){
+        url = 'http://localhost:8080/addTutor';
+    }
+    const userData = {
+        username: email,
+        password: password,
+        userType: form.role.value,
+        language: form.language.value,
+        grade: form.grade.value,
+        subjects: subjects
+    };
+   
+  fetch(url, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json', 
+    },
+    body: JSON.stringify(userData)
+  }
+  ).then(Response=> {
+    if(Response.status == 400){
+        swal("Already Exists", "User already exists", "error")
+        throw new Error('User already exists');
+    }
+    return Response.json();
+  })
+  .then(data=>{
+  swal("Verified", `${data.name} Your Email is Verified`, "success");
+  window.location.href = "signin.html";
+})
+});
+</script>
+
+</html>

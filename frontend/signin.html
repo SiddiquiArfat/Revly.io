@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sign-in</title>
+</head>
+<link rel="stylesheet" href="style.css">
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<body>
+    
+<main>
+    <div class="main">
+        <div class="signup-container">
+            <h1>Welome to DoubtShare</h1>
+            <form class="signup-form" method="post" action="/login">
+                <h2>Log in form</h2>
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="username" placeholder="Enter Your Email" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter Your Password" required>
+                </div>
+                <button id="register" type="submit">Log in</button>
+                <p>Don't have an account? <a href="signup.html">Register</a></p>
+            </form>
+        </div>
+    </div>
+    </main>
+</body>
+<script>
+    let form = document.querySelector('form');
+    form.addEventListener('submit',(e)=>{
+    e.preventDefault();
+    let email = form.email.value;
+    let password = form.password.value;
+    let url = 'http://localhost:8080/signIn';
+    const log = btoa(email+':'+password);
+    const userData = {
+        username: email,
+        password: password
+    };
+    console.log(log);
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Basic '+log
+    },
+  }
+  ).then(Response=> {
+    if(Response.status == 401){
+      console.log(Response);
+      swal("Wrong Credeniels!", "Please enter correct username and password", "error");
+      throw new Error("Login Failed");
+    }
+    let token = Response.headers.get('Authorization');
+    console.log(token);
+    localStorage.setItem('jwtToken', token);
+    window.location.href = "index.html";
+  })
+});
+</script>
+</html>
