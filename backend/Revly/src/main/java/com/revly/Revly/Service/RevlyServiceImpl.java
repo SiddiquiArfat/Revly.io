@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -62,11 +63,17 @@ public class RevlyServiceImpl implements RevlyService{
     public Doubt createDoudt(String username, Doubt doubt) throws UsersException, TutorException {
         Users user = ur.findByUsername(username).orElseThrow(()-> new UsersException("User Not Found"));
         List<TutorAvailability> tr = acticeTutor();
-        TutorAvailability tr1 = tr.stream().filter(h-> h.getGrade().equals(doubt.getGrade()) && h.getLanguage().equals(doubt.getLanguage()) && h.getSubjects().contains(doubt.getSubject())).findFirst().orElseThrow(()-> new TutorException("No Tutor Found"));
+        TutorAvailability tr1 = tr.stream().filter(h-> h.getGrade().equals(user.getGrade()) && h.getLanguage().equals(user.getLanguage()) && h.getSubjects().contains(doubt.getSubject())).findFirst().orElseThrow(()-> new TutorException("No Tutor Found"));
         List<Doubt> doubts = tr1.getRequest();
         doubts.add(doubt);
+        doubt.setCreated(LocalDateTime.now());
         tr1.setRequest(doubts);
         doubt.setTutorAvailability(tr1);
+
+        List<Doubt> d = user.getDoubts();
+        d.add(doubt);
+        user.setDoubts(d);
+        doubt.setUser(user);
         return dr.save(doubt);
     }
 
@@ -74,6 +81,11 @@ public class RevlyServiceImpl implements RevlyService{
     public List<Doubt> getAllDoubts(String username) throws UsersException {
         Users user = ur.findByUsername(username).orElseThrow(()-> new UsersException("User Not Found"));
         return user.getDoubts();
+    }
+
+    @Override
+    public Users getUserByUsername(String username) throws UsersException {
+        return ur.findByUsername(username).orElseThrow(()-> new UsersException("User Not Found"));
     }
 
 

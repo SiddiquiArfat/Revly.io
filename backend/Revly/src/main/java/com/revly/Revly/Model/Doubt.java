@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -18,8 +21,9 @@ public class Doubt {
     String doubt;
 
     String subject;
-    String language;
-    String grade;
+
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime created;
 
     @ManyToOne
     Users user;

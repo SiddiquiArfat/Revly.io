@@ -45,7 +45,6 @@ public class RevlyController {
     //    Login method
     @PostMapping("/signIn")
     public ResponseEntity<String> getLoggedInCustomerDetailsHandler(Authentication auth) throws UsersException {
-        System.out.println(auth); // this Authentication object having Principle object details
         RevlyServiceImpl.username = auth.getName();
          Users customer= ur.findByUsername(auth.getName()).orElseThrow(()-> new UsersException("User Not Found"));
         return new ResponseEntity<>(customer.getUsername()+"Logged In Successfully", HttpStatus.ACCEPTED);
@@ -53,20 +52,30 @@ public class RevlyController {
 
     //    get all Active tutor
     @GetMapping("/getTutor")
-    public ResponseEntity<List<TutorAvailability>> listTutor(){
+    public ResponseEntity<List<TutorAvailability>> listTutor(Principal principal){
+        RevlyServiceImpl.username = principal.getName();
         return new ResponseEntity<>(rs.acticeTutor(), HttpStatus.OK);
     }
 
 //    Creating Doubts
     @PostMapping("/addDoubt")
     public ResponseEntity<Doubt> addDoubt(@RequestBody @Valid Doubt doubt, Principal principal) throws UsersException, TutorException {
+        RevlyServiceImpl.username = principal.getName();
         return new ResponseEntity<>(rs.createDoudt(principal.getName(), doubt), HttpStatus.OK);
     }
 
 //    getting All doubts
     @GetMapping("/doubts")
     public ResponseEntity<List<Doubt>> getAllDoubts(Principal principal) throws UsersException {
+        RevlyServiceImpl.username = principal.getName();
         return new ResponseEntity<>(rs.getAllDoubts(principal.getName()), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/user")
+    public ResponseEntity<Users> users(Principal principal) throws UsersException {
+        RevlyServiceImpl.username = principal.getName();
+        return new ResponseEntity<>(rs.getUserByUsername(principal.getName()), HttpStatus.OK);
     }
 
 

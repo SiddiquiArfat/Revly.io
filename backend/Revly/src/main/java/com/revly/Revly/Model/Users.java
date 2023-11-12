@@ -31,6 +31,8 @@ public class Users {
     String grade;
     String language;
 
+    String name;
+
     @ElementCollection
     @CollectionTable
     @Column(name = "subject")
