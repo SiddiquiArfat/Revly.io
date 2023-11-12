@@ -28,4 +28,6 @@ public interface RevlyService {
 
     // Getting All Doubts
     public List<Doubt> getAllDoubts(String username) throws UsersException;
+
+    public Users getUserByUsername(String username) throws UsersException;
 }

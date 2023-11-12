@@ -24,6 +24,10 @@
                     <input type="password" id="password" name="password" placeholder="Enter Your Password" required>
                 </div>
                 <div class="input-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter Your Name" required>
+                </div>
+                <div class="input-group">
                     <label for="grade">Grade</label>
                     <input type="number" id="grade" name="grade" placeholder="Enter Your grade"  min="1" max="10" required>
                 </div>
@@ -44,8 +48,8 @@
                         <option value="TUTOR">Tutor</option>
                     </select>
                 </div>
-                <button id="register" type="submit">Log in</button>
-                <p>Already have an account? <a href="signin.html">Log In</a></p>
+                <button id="register" type="submit">Signup</button>
+                <p>Already have an account? <a href="signin.html">Log in</a></p>
             </form>
         </div>
         <div class="checkbox-container">
@@ -108,6 +112,7 @@ checkboxes.forEach((checkbox) => {
         url = 'http://localhost:8080/addTutor';
     }
     const userData = {
+        name: form.name.value,
         username: email,
         password: password,
         userType: form.role.value,

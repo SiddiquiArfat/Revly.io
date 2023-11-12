@@ -1,11 +1,434 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Doubts</title>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <style>
+        body,
+        ul {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+
+        header {
+            background-color: #ffffff;
+            color: #121111;
+            padding: 10px 0;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+            position: relative;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            /* color: white; */
+        }
+
+        .nav-links li {
+            margin-right: 20px;
+            /* border: 2px solid black; */
+            padding: 10px;
+
+        }
+
+        .nav-links li:hover {
+            box-shadow: #0077aa 0px 1px 4px, #73c0e1 0px 0px 0px 3px;
+            transition: 0.3s;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #0d0d0d;
+            transition: color 0.3s ease;
+        }
+
+        main {
+            width: 90%;
+            margin: auto;
+        }
+
+        #doubt {
+            width: 100%;
+            margin-top: 30px;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #121111;
+            color: white;
+        }
+
+        #doubt:hover {
+            background-color: white;
+            color: black;
+            transition: 0.3s ease;
+        }
+
+        #listproject {
+            margin-top: 50px;
+        }
+
+        .table {
+            width: 95%;
+            margin: auto;
+        }
+
+        .table {
+            border-collapse: collapse;
+            font-size: 0.9em;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+            /* border-radius: 400px; */
+        }
+
+        .table thead tr {
+            /* background-color: #009879; */
+            /* background-image: linear-gradient(60deg, #3d3393 0%, #2b76b9 37%, #2cacd1 65%, #35eb93 100%); */
+            background-color: #0d0d0d;
+            color: #ffffff;
+            text-align: left;
+        }
+
+        .table th,
+        .table td {
+            padding: 12px 15px;
+        }
+
+        .table tbody tr {
+            border-bottom: 1px solid #dddddd;
+        }
+
+        .table tbody tr:nth-of-type(even) {
+            background-color: #f3f3f3;
+        }
+
+        .table tbody tr:last-of-type {
+            border-bottom: 2px solid #009879;
+        }
+
+        .table tbody tr.active-row {
+            font-weight: bold;
+            color: #009879;
+        }
+
+        table button {
+            /* width: 20px;
+    height: 20px; */
+            padding: 5px;
+            color: white;
+            /* border-radius: 100px; */
+            margin-left: 5px;
+            border: none;
+        }
+
+        /* Styles for the popup */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .popup-content {
+            background-color: #fff;
+            padding: 20px;
+            /* max-width: 400px; */
+            /* width: 600px; */
+            width: 50%;
+            margin: 0 auto;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="date"],
+        select,
+        button[type="submit"] {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button[type="submit"] {
+            background-color: #000000;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #f1f1f1;
+            color: #000000;
+            border: 1px solid black;
+            transition: 0.3s ease;
+        }
+
+        /* Styles for the animation */
+        .popup.show-popup {
+            display: flex;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Styles for the close button */
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .close:hover {
+            transform: rotate(90deg);
+            /* Add the desired rotation angle */
+        }
+    </style>
 </head>
+
 <body>
-    
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">DoubtShare</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="tutor.html">Tutor</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <button id="doubt">Raise a Doubt</button>
+
+
+        <div class="popup" id="popup">
+            <div class="popup-content">
+                <span class="close" id="closePopupBtn">&times;</span>
+                <h2>Create Doubt</h2>
+                <form id="updateform">
+
+                    <label for="about">Doubt:</label>
+                    <!-- <input type="text" id="about" name="about" required> -->
+                    <textarea name="about" id="about" cols="30" rows="10" required></textarea>
+
+                    <label for="subject">Subject:</label>
+                    <select name="subject" id="subject">
+                    </select>
+
+
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+
+
+        <div id="listproject">
+            <table class="table">
+                <thead class="head">
+                    <tr>
+                        <th>Created</th>
+                        <th>Grade</th>
+                        <th>Doubt</th>
+                        <th>Language</th>
+                        <th>Subject</th>
+                        <th>Tutor</th>
+                    </tr>
+                </thead>
+                <tbody id="body">
+                </tbody>
+                <table>
+        </div>
+
+    </main>
+
+
 </body>
+<script>
+    const showPopupBtn = document.getElementById('doubt');
+    const closePopupBtn = document.getElementById('closePopupBtn');
+    const popup = document.getElementById('popup');
+    showPopupBtn.addEventListener('click', () => {
+        popup.classList.add('show-popup');
+    });
+    closePopupBtn.addEventListener('click', () => {
+        popup.classList.remove('show-popup');
+    });
+    window.addEventListener('click', (e) => {
+        if (e.target === popup) {
+            popup.classList.remove('show-popup');
+        }
+    });
+
+    let select = document.getElementById("subject");
+    let jwtToken = localStorage.getItem('jwtToken');
+
+    fetch("http://localhost:8080/user", {
+        method: "GET",
+        headers: {
+            'Authorization': 'Bearer ' + jwtToken,
+            'ContentType': 'application/json'
+        }
+    }).then(res => {
+        return res.json();
+    }).then(data => {
+        let subjects = data.subjects;
+        subjects.forEach(element => {
+            let opt = document.createElement('option');
+            opt.textContent = element;
+            select.append(opt);
+        });
+    })
+
+    // add daubt
+    let form = document.querySelector('form');
+    form.addEventListener("submit", () => {
+        event.preventDefault();
+
+        let Data = {
+            "doubt": form.about.value,
+            "subject": form.subject.value
+        }
+        fetch("http://localhost:8080/addDoubt", {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + jwtToken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(Data)
+        }).then(response => {
+            if (response.status == 401) {
+                console.error('Request failed with status:', response.status);
+                window.location.href = "signin.html";
+                return response.text();
+            }
+            if (response.status == 400) {
+                swal("Problem", `No active Tutor found`, "error");
+                popup.classList.remove('show-popup');
+                new Error('tutor');
+            }
+            else{
+                popup.classList.remove('show-popup');
+            swal("Good job!", "doubt Added Successfully!", "success").then(res=>{
+                fetchapi();
+            });
+            return response.json();
+            }
+        })
+    })
+
+    function fetchapi() {
+        const apiUrl = 'http://localhost:8080/doubts';
+        const request = new Request(apiUrl, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${jwtToken}`,
+                'Content-Type': 'application/json',
+            }
+        })
+        fetch(request)
+            .then(response => {
+                if (response.status == 401) {
+                    console.error('Request failed with status:', response.status);
+                    window.location.href = "signin.html";
+                    return 0;
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                fun(data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+    fetchapi();
+
+    let projects = document.getElementById('body');
+
+    function fun(data){
+    console.log(data.length);
+    projects.innerHTML = "";
+    data.forEach((element) => {
+    let tr = document.createElement('tr');
+    
+    let td = document.createElement('td');
+    let a = document.createElement('p');
+    a.textContent = element.created;
+    td.append(a);
+
+    let td1 = document.createElement('td');
+    td1.textContent = element.user.grade;
+
+    let td2 = document.createElement('td');
+    td2.textContent = element.doubt;
+    let td3 = document.createElement('td');
+    td3.textContent = element.user.language;
+
+    let td4 = document.createElement('td');
+    td4.textContent = element.subject;
+
+    let td5 = document.createElement('td');
+    td5.textContent = element.tutorAvailability.username;
+    
+    
+    tr.append(td,td1, td2, td3 , td4 , td5);
+    projects.append(tr);   
+  });
+}
+
+</script>
+
 </html>

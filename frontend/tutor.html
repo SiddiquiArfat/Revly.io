@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutors</title>
+    <style>
+        body,
+        ul {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+
+        header {
+            background-color: #ffffff;
+            color: #121111;
+            padding: 10px 0;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+            position: relative;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            /* color: white; */
+        }
+
+        .nav-links li {
+            margin-right: 20px;
+            /* border: 2px solid black; */
+            padding: 10px;
+
+        }
+
+        .nav-links li:hover {
+            box-shadow: #0077aa 0px 1px 4px, #73c0e1 0px 0px 0px 3px;
+            transition: 0.3s;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #0d0d0d;
+            transition: color 0.3s ease;
+        }
+        #main div{
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            padding: 20px;
+        } 
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">DoubtShare</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="tutor.html">Tutor</a></li>
+            </ul>
+        </nav>
+    </header>
+    <h1 id="head"></h1>
+    <div id="main">
+
+    </div>
+</body>
+
+<script>
+    let main = document.getElementById('main');
+    let jwtToken = localStorage.getItem('jwtToken');
+    let head = document.getElementById('head');
+    function fetchapi(){
+
+        const apiUrl = 'http://localhost:8080/getTutor';
+        const request = new Request(apiUrl, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${jwtToken}`,
+                'Content-Type': 'application/json',
+            }
+        })
+        fetch(request)
+            .then(response => {
+                if (response.status == 401) {
+                    console.error('Request failed with status:', response.status);
+                    window.location.href = "signin.html";
+                    return 0;
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                fun(data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+
+    fetchapi();
+
+
+    function fun(data){
+        head.textContent = "Total Active Tutors "+data.length;
+        data.forEach(element => {
+            let div = document.createElement('div');
+            let h4 = document.createElement('h4');
+            h4.textContent = element.name;
+            let p1 = document.createElement('p');
+            p1.textContent = element.username;
+            let p2 = document.createElement('p');
+            p2.textContent = `Lanuage: ${element.language}`;
+            let p3 = document.createElement('p');
+            p3.textContent = `Grade: ${element.grade}`;
+            let p4 = document.createElement('p');
+            p4.textContent = `Status: Online`;
+            let p5 = document.createElement('p');
+            p5.textContent = element.subjects;
+
+            div.append(h4, p1, p2,p3,p4,p5);
+            main.append(div);
+        });
+    }
+
+</script>
+
+</html>
