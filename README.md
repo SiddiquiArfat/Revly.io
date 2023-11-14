@@ -36,8 +36,6 @@ spring.datasource.password=your-password
 # Use Maven to build the project
 mvn clean install
 
-# After successful build, navigate to target directory and run the jar file
-java -jar target/decisive-iron-5903-0.0.1-SNAPSHOT.jar
 
 # Your application should be up and running at http://localhost:8080.
 ```
